@@ -18,11 +18,11 @@ const app = () => {
     if (song.paused) {
       song.play();
       video.play();
-      play.src = "./assets/svg/pause.svg";
+      play.src = icons.pauseIcon;
     } else {
       song.pause();
       video.pause();
-      play.src = "./assets/svg/play.svg";
+      play.src = icons.playIcon;
     }
 
     song.ontimeupdate = () => {
@@ -39,17 +39,17 @@ const app = () => {
       if (currentTime >= Duration) {
         song.pause();
         song.currentTime = 0;
-        play.src = "./assets/svg/play.svg";
+        play.src = icons.playIcon;
         video.pause();
       }
     };
   };
 
   sounds.addEventListener("click", function (event) {
-    let elem = event.target;
-    if (elem.tagName !== "BUTTON") {
-      elem = elem.closest("button");
-    }
+    const elem =
+      event.target.tagName !== "BUTTON"
+        ? event.target.closest("button")
+        : event.target;
     if (elem) {
       song.src = elem.dataset.sound;
       video.src = elem.dataset.video;
@@ -65,11 +65,9 @@ const app = () => {
     if (event.target.tagName !== "BUTTON") return;
 
     Duration = event.target.dataset.time;
-    let durationSeconds = Math.floor(Duration % 60);
-    if (durationSeconds === 0) {
-      durationSeconds = "00";
-    }
+    const durationSeconds = Math.floor(Duration % 60)
+      ? Math.floor(Duration % 60)
+      : "00";
     timeDisplay.textContent = `${Math.floor(Duration / 60)}:${durationSeconds}`;
   });
 };
-app();
